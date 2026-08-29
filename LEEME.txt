@@ -1,0 +1,17 @@
+APP PRESUPUESTO DRELM 2026 – V7.2
+
+CORRECCIÓN DE EJECUCIÓN / RENDIMIENTO
+
+Problema encontrado:
+La V7/V7.1 intentaba calcular y dibujar TODOS los módulos al mismo tiempo,
+aunque estuvieran ocultos. Los módulos Saldos y Clasificadores generan miles
+de filas jerárquicas y podían bloquear el navegador antes de abrir Devengado.
+
+Corrección:
+- Ahora solo se procesa el módulo que está visible.
+- Al abrir Devengado, únicamente se calculan sus KPI, gráficos y tabla.
+- Al cambiar un filtro, solo se vuelve a calcular la página actual.
+- Se agregó un pequeño aviso "Procesando módulo..." al cambiar de página.
+- Se mantienen los datos reales, filtros múltiples y cálculos anteriores.
+
+Esto reduce de forma importante el tiempo de carga y evita que el módulo quede congelado.

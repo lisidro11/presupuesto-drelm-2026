@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Presupuesto DRELM 2026</title>
+<style>
+:root{
+ --nav:#0b4f76;--nav2:#0e6f9f;--accent:#ef405d;--bg:#f4f7fa;--card:#fff;
+ --text:#17212b;--muted:#6b7785;--line:#d9e2e9;--green:#2ca25f;--amber:#e9a21b;--red:#df3e4e;--blue:#2386b8;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.app{display:grid;grid-template-columns:225px 1fr;min-height:100vh}
+.sidebar{background:linear-gradient(180deg,var(--nav),#073d5d);color:#fff;padding:17px 13px;position:sticky;top:0;height:100vh}
+.brand{font-size:19px;font-weight:900;letter-spacing:.2px}.brand small{display:block;font-size:11px;font-weight:500;opacity:.8;margin-top:4px}
+.sectionlabel{font-size:10px;text-transform:uppercase;opacity:.6;margin:22px 8px 8px}
+.navbtn{padding:10px 11px;border-radius:8px;margin:5px 0;background:rgba(255,255,255,.055);font-size:12px;cursor:pointer}
+.navbtn:hover{background:rgba(255,255,255,.12)} .navbtn.active{background:#fff;color:var(--nav);font-weight:800}
+.sidebar .foot{position:absolute;bottom:18px;left:14px;right:14px;font-size:10px;opacity:.7;line-height:1.4}
+.main{padding:14px 18px 26px;min-width:0}
+.top{background:#fff;border-radius:10px 10px 0 0;border-bottom:3px solid var(--accent);padding:12px 15px;display:flex;align-items:center;justify-content:space-between}
+.title{font-size:18px;font-weight:900}.subtitle{font-size:11px;color:var(--muted);margin-top:3px}.badge{background:#fff1f4;color:var(--accent);font-size:11px;padding:7px 10px;border-radius:999px;font-weight:800}
+.filters{display:grid;grid-template-columns:repeat(5,minmax(145px,1fr));gap:8px;background:#fff;padding:12px 15px;border:1px solid var(--line);border-top:0}
+.filter label{display:block;font-size:10px;color:var(--muted);font-weight:800;margin-bottom:4px}
+select,input{width:100%;border:1px solid #ccd7df;border-radius:7px;background:#fff;padding:8px;font-size:11px}
+.actions{display:flex;align-items:end;gap:7px}.btn{border:0;border-radius:7px;padding:8px 11px;font-weight:800;cursor:pointer;font-size:11px}.primary{background:var(--nav2);color:#fff}.light{background:#eaf2f7;color:var(--nav)}
+.kpis{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin:11px 0}.kpi{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px;min-width:0}.kpi .lab{font-size:9px;color:var(--muted);font-weight:900;text-transform:uppercase;display:flex;align-items:center;gap:5px}.kpi .ico{font-size:15px;line-height:1;filter:saturate(.9)}.kpi .val{font-size:16px;font-weight:900;margin-top:4px;white-space:nowrap}.kpi .sub{font-size:10px;color:var(--muted);margin-top:3px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}.panel h3{font-size:12px;margin:0;padding:10px 12px;background:#f8fafc;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px}.body{padding:10px 12px}
+.grid2{display:grid;grid-template-columns:1.05fr .95fr;gap:10px}
+table{border-collapse:collapse;width:100%;font-size:10.5px} th{position:sticky;top:0;z-index:2;background:#3d81aa;color:#fff;padding:6px 5px;text-align:right;white-space:nowrap} th:first-child,td:first-child{text-align:left} td{padding:5px;border-bottom:1px solid #e6edf2;text-align:right;white-space:nowrap} tr:hover td{background:#f7fbfd}.total td{font-weight:900;background:#eef4f7}
+.tablewrap{max-height:460px;overflow:auto}.small{font-size:10px;color:var(--muted)}
+.page{display:none}.page.active{display:block}
+.ranklist{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.rankcard{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}.rankcard .rhead{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:900}.rankcard .place{background:#edf4f8;color:var(--nav);padding:3px 7px;border-radius:999px}.gauge{height:12px;background:#e9eef2;border-radius:99px;overflow:hidden;margin:9px 0 5px}.gauge i{display:block;height:100%;background:linear-gradient(90deg,#4ea4cc,#0d6f9e);border-radius:99px}.rmetric{font-size:22px;font-weight:900;color:var(--nav)}.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;font-size:9.5px;color:#56616d}.rgrid b{color:#1e2933}
+.chartbox{height:330px}.chartbox canvas{width:100%;height:100%}
+.hierarchy-tools{display:flex;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line);background:#fbfdfe;flex-wrap:wrap}.hierarchy-tools select{width:auto;min-width:220px}
+.treecell{min-width:430px}.toggle{display:inline-flex;width:17px;height:17px;align-items:center;justify-content:center;border:1px solid #9eb2c0;border-radius:3px;margin-right:6px;font-weight:900;cursor:pointer;background:#fff;color:#315a70}.indent{display:inline-block}.lvl0 td{font-weight:900;background:#f2f7fa}.lvl1 td{font-weight:800;background:#f8fbfd}.lvl2 td{background:#fcfdfe}.sem{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}.green{background:var(--green)}.amber{background:var(--amber)}.red{background:var(--red)}
+.rank-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:9px}.mini{border:1px solid var(--line);border-radius:8px;padding:9px;background:#fff}.mini .a{font-size:9px;text-transform:uppercase;color:var(--muted);font-weight:900}.mini .b{font-size:17px;font-weight:900;margin-top:4px}
+@media(max-width:1300px){.kpis{grid-template-columns:repeat(4,1fr)}.filters{grid-template-columns:repeat(3,1fr)}.ranklist{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.app{display:block}.sidebar{height:auto;position:relative}.sidebar .foot{display:none}.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.ranklist{grid-template-columns:1fr}}
+
+.multi{position:relative}
+.multi-btn{width:100%;min-height:34px;border:1px solid #ccd7df;border-radius:7px;background:#fff;padding:7px 30px 7px 9px;font-size:11px;text-align:left;cursor:pointer;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.multi-btn:after{content:'▾';position:absolute;right:10px;top:7px;color:#6b7785}
+.multi.open .multi-btn:after{content:'▴'}
+.multi-menu{display:none;position:absolute;z-index:30;left:0;right:0;top:38px;background:#fff;border:1px solid #bfcbd5;border-radius:7px;box-shadow:0 7px 20px #0002;max-height:310px;overflow:hidden}
+.multi.open .multi-menu{display:block}
+.multi-search{padding:7px;border-bottom:1px solid #e3e9ee}
+.multi-search input{width:100%;padding:7px;border:1px solid #ccd7df;border-radius:6px}
+.multi-actions{display:flex;gap:6px;padding:6px 7px;border-bottom:1px solid #e3e9ee;background:#f8fafc}
+.multi-actions button{border:0;background:#eaf2f7;color:#0b4f76;border-radius:5px;padding:5px 8px;font-size:10px;font-weight:700;cursor:pointer}
+.multi-list{max-height:225px;overflow:auto;padding:4px 0}
+.multi-item{display:flex;align-items:flex-start;gap:7px;padding:5px 8px;font-size:10px;cursor:pointer;line-height:1.25}
+.multi-item:hover{background:#f2f7fa}
+.multi-item input{width:auto;margin-top:2px}
+.multi-count{color:#0b4f76;font-weight:800}
+
+
+.chartlegend{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:8px 12px 0;font-size:10px;color:#4b5965}
+.legenditem{display:inline-flex;align-items:center;gap:5px;font-weight:700}
+.legendbox{width:12px;height:10px;border-radius:2px;display:inline-block}
+.legendline{width:24px;height:0;border-top:2px dashed #f0a500;display:inline-block}
+
+
+.saldo-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.saldo-card{background:#fffbe0;border:1px solid #e8d880;border-radius:9px;padding:12px}
+.saldo-card .lab{font-size:10px;color:#775d19;font-weight:900;text-transform:uppercase}
+.saldo-card .val{font-size:21px;font-weight:900;color:#9a5a00;margin-top:4px}
+.kpi4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.metric-card{border:1px solid var(--line);border-radius:9px;padding:10px;background:#fff}
+.metric-card .lab{font-size:9px;color:var(--muted);font-weight:900;text-transform:uppercase}
+.metric-card .val{font-size:18px;font-weight:900;margin-top:4px}
+.dashgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.chart-title{font-size:11px;font-weight:900;margin-bottom:6px}
+.chartmini{height:260px}
+.chartmini canvas{width:100%;height:100%}
+@media(max-width:1000px){.saldo-cards,.kpi4,.dashgrid{grid-template-columns:1fr}}
+
+
+.module-loading{position:fixed;right:24px;bottom:22px;background:#0b4f76;color:#fff;padding:8px 12px;border-radius:8px;font-size:11px;font-weight:800;box-shadow:0 4px 16px #0003;display:none;z-index:100}
+
+
+.data-updatebar{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ background:#eef7fb;border:1px solid #cbdde7;border-top:0;padding:9px 15px;
+}
+.data-source{min-width:0}
+.data-source .ds-title{font-size:10px;font-weight:900;color:#0b4f76;text-transform:uppercase}
+.data-source .ds-info{font-size:10px;color:#536572;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.data-actions{display:flex;gap:7px;flex-wrap:wrap}
+.btn-update{background:#0b4f76;color:#fff}
+.btn-base{background:#fff;color:#0b4f76;border:1px solid #b9cedb}
+.import-modal{
+ position:fixed;inset:0;background:#10263499;z-index:200;display:none;
+ align-items:center;justify-content:center;padding:20px
+}
+.import-box{background:#fff;width:min(560px,95vw);border-radius:13px;padding:20px;box-shadow:0 18px 50px #0004}
+.import-box h2{margin:0 0 7px;font-size:17px;color:#0b4f76}
+.import-box p{font-size:11px;color:#5d6b75;line-height:1.5}
+.import-progress{height:10px;border-radius:99px;background:#e7edf1;overflow:hidden;margin-top:14px}
+.import-progress i{display:block;height:100%;width:0;background:#0e6f9f;transition:width .2s}
+.import-msg{font-size:11px;font-weight:700;margin-top:9px;color:#324b5a}
+.import-ok{color:#18834c}.import-error{color:#c73945}
+@media(max-width:800px){.data-updatebar{align-items:flex-start;flex-direction:column}.data-actions{width:100%}.data-actions .btn{flex:1}}
+
+
+.report-meta{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ background:#f8fbfd;border:1px solid var(--line);border-top:0;padding:8px 15px;
+ font-size:10px;color:#425563;flex-wrap:wrap
+}
+.report-meta .meta-left,.report-meta .meta-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.report-meta b{color:#0b4f76}
+.report-meta .cut{
+ background:#e9f5fb;color:#0b4f76;border:1px solid #c6e0ed;
+ padding:5px 9px;border-radius:999px;font-weight:900
+}
+
+
+.central-loader{
+ position:fixed;inset:0;background:#f4f7fa;z-index:9999;display:flex;
+ align-items:center;justify-content:center;padding:20px
+}
+.central-loader .box{
+ background:#fff;border:1px solid #d9e2e9;border-radius:14px;padding:24px;
+ width:min(520px,92vw);box-shadow:0 12px 34px #0002;text-align:center
+}
+.central-loader h2{margin:0 0 7px;color:#0b4f76;font-size:18px}
+.central-loader p{margin:0;color:#61717d;font-size:11px;line-height:1.5}
+.central-loader .spin{
+ width:34px;height:34px;border:4px solid #dce9f0;border-top-color:#0e6f9f;
+ border-radius:50%;margin:16px auto;animation:centralSpin .8s linear infinite
+}
+.central-loader.error .spin{display:none}
+.central-loader.error h2{color:#c73945}
+@keyframes centralSpin{to{transform:rotate(360deg)}}
+
+</style>
+</head>
+<body>
+
+<div id="centralLoader" class="central-loader">
+  <div class="box">
+    <h2 id="centralLoaderTitle">Cargando información presupuestal</h2>
+    <div class="spin"></div>
+    <p id="centralLoaderText">Leyendo la fuente central publicada…</p>
+  </div>
+</div>
+
+<div class="app">
+<aside class="sidebar">
+ <div class="brand">DRELM <small>Gestión · Presupuesto</small></div>
+ <div class="sectionlabel">Módulos</div>
+ <div class="navbtn active" data-page="resumen">Resumen ejecutivo</div>
+ <div class="navbtn" data-page="detalle">Detalle presupuestal</div>
+ <div class="navbtn" data-page="ranking">Ranking de gasto</div>
+ <div class="navbtn" data-page="saldos">Saldos presupuestales</div>
+ <div class="navbtn" data-page="programas">Programas presupuestales</div>
+ <div class="navbtn" data-page="generica">Genérica de gasto</div>
+ <div class="navbtn" data-page="clasificadores">Clasificadores</div>
+ <div class="navbtn" data-page="evolucion">Evolución mensual</div>
+ <div class="navbtn" data-page="devengado">Devengado</div>
+ <div class="foot">Fuente: Sector 10 Educación<br>Actualización centralizada<br>APP Presupuesto DRELM 2026</div>
+</aside>
+
+<main class="main">
+ <div class="top">
+   <div><div class="title" id="pageTitle">Resumen ejecutivo</div><div class="subtitle">DRELM y 07 UGEL de Lima Metropolitana · Año fiscal 2026 · Filtros de selección múltiple</div></div>
+   <div class="badge" id="rowCount">0 registros</div>
+ </div>
+
+ <section class="filters">
+   <div class="filter"><label>Unidad Ejecutora</label><div class="multi" id="fUE" data-field="ue"></div></div>
+   <div class="filter"><label>Programa Presupuestal</label><div class="multi" id="fPP" data-field="pp"></div></div>
+   <div class="filter"><label>Producto / Proyecto</label><div class="multi" id="fProd" data-field="ap"></div></div>
+   <div class="filter"><label>Actividad</label><div class="multi" id="fAct" data-field="ao"></div></div>
+   <div class="filter"><label>Genérica de gasto</label><div class="multi" id="fGen" data-field="gen"></div></div>
+   <div class="filter"><label>Rubro</label><div class="multi" id="fRubro" data-field="rubro"></div></div>
+   <div class="filter"><label>Grupo funcional</label><div class="multi" id="fGrp" data-field="grp"></div></div>
+   <div class="filter"><label>Meta</label><div class="multi" id="fMeta" data-field="meta"></div></div>
+   <div class="filter"><label>Clasificador</label><div class="multi" id="fClas" data-field="clas"></div></div>
+   <div class="actions"><button class="btn light" onclick="resetFilters()">Limpiar</button><button class="btn primary" onclick="exportCSV()">Exportar CSV</button></div>
+ </section>
+
+ <section class="kpis">
+   <div class="kpi"><div class="lab"><span class="ico">🏛️</span>PIA</div><div class="val" id="kPIA"></div><div class="sub">Presupuesto inicial</div></div>
+   <div class="kpi"><div class="lab"><span class="ico">📊</span>PIM</div><div class="val" id="kPIM"></div><div class="sub" id="sPIM"></div></div>
+   <div class="kpi"><div class="lab"><span class="ico">✅</span>Certificado</div><div class="val" id="kCERT"></div><div class="sub" id="sCERT"></div></div>
+   <div class="kpi"><div class="lab"><span class="ico">🤝</span>Compromiso</div><div class="val" id="kCOMP"></div><div class="sub" id="sCOMP"></div></div>
+   <div class="kpi"><div class="lab"><span class="ico">💰</span>Devengado</div><div class="val" id="kDEV"></div><div class="sub" id="sDEV"></div></div>
+   <div class="kpi"><div class="lab"><span class="ico">🔄</span>Girado</div><div class="val" id="kGIR"></div><div class="sub" id="sGIR"></div></div>
+   <div class="kpi"><div class="lab"><span class="ico">💳</span>Pagado</div><div class="val" id="kPAG"></div><div class="sub" id="sPAG"></div></div>
+   <div class="kpi"><div class="lab"><span class="ico">⏳</span>Saldo por devengar</div><div class="val" id="kSALDO"></div><div class="sub" id="sSALDO"></div></div>
+ </section>
+
+ <section id="resumen" class="page active">
+   <div class="grid2">
+     <div class="panel">
+       <h3><span>Resumen por Unidad Ejecutora</span><span class="small">Semáforo = Devengado / PIM</span></h3>
+       <div class="tablewrap"><table><thead><tr><th>Unidad Ejecutora</th><th>PIA</th><th>PIM</th><th>% Cert.</th><th>% Comp.</th><th>Devengado</th><th>% Ejec.</th><th>Girado</th></tr></thead><tbody id="ueBody"></tbody></table></div>
+     </div>
+     <div class="panel"><h3><span>Ranking rápido</span><span class="small">% Devengado / PIM</span></h3><div class="body" id="quickRank"></div><h3><span>Evolución mensual</span><span class="small">Compromiso · Devengado · Girado</span></h3><div class="body chartbox" style="height:235px"><canvas id="trend"></canvas></div></div>
+   </div>
+ </section>
+
+ <section id="detalle" class="page">
+   <div class="panel">
+     <h3><span>Matriz jerárquica de ejecución presupuestal</span><span class="small">Use + / − para desplegar niveles</span></h3>
+     <div class="hierarchy-tools">
+       <span class="small">Jerarquía:</span>
+       <select id="treeMode"><option value="ejecutiva">Ejecutiva: Programa → Producto → Actividad → Genérica → UE</option><option value="analitica">Analítica: Programa → Producto → Actividad → División → Grupo → Meta → Genérica → Clasificador → UE</option></select>
+       <button class="btn light" onclick="expandLevel(1)">Abrir nivel 1</button><button class="btn light" onclick="collapseAll()">Contraer todo</button>
+     </div>
+     <div class="tablewrap" style="max-height:610px"><table id="treeTable">
+       <thead><tr><th>Concepto presupuestal</th><th>PIA</th><th>Modificación</th><th>PIM</th><th>Pond.</th><th>Certificado</th><th>% Cert.</th><th>Compromiso</th><th>% Comp.</th><th>Devengado</th><th>% Ejec.</th><th>Girado</th><th>Pagado</th><th>Saldo</th></tr></thead><tbody id="treeBody"></tbody>
+     </table></div>
+   </div>
+ </section>
+
+ <section id="ranking" class="page">
+   <div class="rank-summary">
+     <div class="mini"><div class="a">Promedio de ejecución</div><div class="b" id="rAvg"></div></div>
+     <div class="mini"><div class="a">Mayor ejecución</div><div class="b" id="rMax"></div></div>
+     <div class="mini"><div class="a">Menor ejecución</div><div class="b" id="rMin"></div></div>
+     <div class="mini"><div class="a">Brecha máx. - mín.</div><div class="b" id="rGap"></div></div>
+   </div>
+   <div class="panel"><h3><span>Ranking de ejecución por Unidad Ejecutora</span><span class="small">Visualización: UGEL 01 → UGEL 07 → DRELM · Puesto calculado por Devengado / PIM</span></h3><div class="body"><div class="ranklist" id="rankCards"></div></div></div>
+   <div class="panel" style="margin-top:10px"><h3><span>Comparativo presupuestal por Unidad Ejecutora</span><span class="small">PIA · PIM · Certificado · Compromiso · Devengado · Girado + línea % ejecución</span></h3><div class="chartlegend">
+<span class="legenditem"><i class="legendbox" style="background:#f2a2a8"></i>PIA</span>
+<span class="legenditem"><i class="legendbox" style="background:#78b6d3"></i>PIM</span>
+<span class="legenditem"><i class="legendbox" style="background:#8bc49b"></i>Certificado</span>
+<span class="legenditem"><i class="legendbox" style="background:#f1c986"></i>Compromiso</span>
+<span class="legenditem"><i class="legendbox" style="background:#a9b4c0"></i>Devengado</span>
+<span class="legenditem"><i class="legendbox" style="background:#e8db87"></i>Girado</span>
+<span class="legenditem"><i class="legendline"></i>% Ejecución</span>
+</div><div class="body chartbox"><canvas id="rankChart"></canvas></div></div>
+ </section>
+
+ <section id="saldos" class="page">
+   <div class="kpi4">
+     <div class="metric-card"><div class="lab">% Certificado</div><div class="val" id="sdPctCert"></div></div>
+     <div class="metric-card"><div class="lab">% Compromiso</div><div class="val" id="sdPctComp"></div></div>
+     <div class="metric-card"><div class="lab">% Devengado</div><div class="val" id="sdPctDev"></div></div>
+     <div class="metric-card"><div class="lab">% Girado</div><div class="val" id="sdPctGir"></div></div>
+   </div>
+   <div class="saldo-cards">
+     <div class="saldo-card"><div class="lab">Saldo por Certificar</div><div class="val" id="sdCert"></div></div>
+     <div class="saldo-card"><div class="lab">Saldo por Comprometer</div><div class="val" id="sdComp"></div></div>
+     <div class="saldo-card"><div class="lab">Saldo por Devengar</div><div class="val" id="sdDev"></div></div>
+   </div>
+   <div class="panel">
+     <h3><span>Saldos Presupuestales vs PIM</span><span class="small">Clasificador → Unidad Ejecutora → Meta Presupuestal</span></h3>
+     <div class="tablewrap" style="max-height:560px"><table>
+       <thead><tr><th>Clasificador / UE / Meta</th><th>PIM</th><th>Certificado</th><th>% Cert.</th><th>Saldo Cert.</th><th>Compromiso</th><th>% Comp.</th><th>Saldo Comp.</th><th>Devengado</th><th>% Dev.</th><th>Saldo Dev.</th></tr></thead>
+       <tbody id="saldoTreeBody"></tbody>
+     </table></div>
+   </div>
+ </section>
+ <section id="programas" class="page"><div class="panel"><h3><span>Programas presupuestales</span></h3><div class="tablewrap"><table><thead><tr><th>Programa</th><th>PIA</th><th>PIM</th><th>Certificado</th><th>% Cert.</th><th>Compromiso</th><th>% Comp.</th><th>Devengado</th><th>% Ejec.</th><th>Saldo</th></tr></thead><tbody id="programasBody"></tbody></table></div></div></section>
+ <section id="generica" class="page">
+   <div class="panel">
+     <h3><span>Gasto por Genérica</span><span class="small">PIA · PIM · Certificado · Compromiso · Devengado · Girado</span></h3>
+     <div class="tablewrap"><table>
+       <thead><tr><th>Categoría / Genérica</th><th>PIA</th><th>PIM</th><th>Variación</th><th>Certificado</th><th>% Cert.</th><th>Compromiso</th><th>% Comp.</th><th>Devengado</th><th>% Dev.</th><th>Girado</th><th>% Gir.</th></tr></thead>
+       <tbody id="genericaBody"></tbody>
+     </table></div>
+   </div>
+   <div class="dashgrid">
+     <div class="panel"><h3><span>PIM vs Devengado por Genérica de Gasto</span></h3><div class="body chartmini"><canvas id="genChart"></canvas></div></div>
+     <div class="panel"><h3><span>PIM vs Devengado por Rubro de Gasto</span></h3><div class="body chartmini"><canvas id="rubroChart"></canvas></div></div>
+   </div>
+ </section>
+ <section id="clasificadores" class="page">
+   <div class="panel">
+     <h3><span>Gasto por Clasificadores</span><span class="small">Clasificador → Programa → Grupo Funcional → Unidad Ejecutora</span></h3>
+     <div class="tablewrap" style="max-height:520px"><table>
+       <thead><tr><th>Clasificador / Programa / Grupo / UE</th><th>PIA</th><th>PIM</th><th>Variación</th><th>Certificado</th><th>% Cert.</th><th>Compromiso</th><th>% Comp.</th><th>Devengado</th><th>% Dev.</th><th>Girado</th><th>% Gir.</th></tr></thead>
+       <tbody id="clasTreeBody"></tbody>
+     </table></div>
+   </div>
+   <div class="dashgrid">
+     <div class="panel"><h3><span>Ejecución Presupuestal por Rubro de Atención</span></h3><div class="body chartmini"><canvas id="clasRubroChart"></canvas></div></div>
+     <div class="panel"><h3><span>Ejecución Presupuestal por Programa</span></h3><div class="body chartmini"><canvas id="clasProgChart"></canvas></div></div>
+   </div>
+ </section>
+ 
+ <section id="devengado" class="page">
+   <div class="kpi4">
+     <div class="metric-card"><div class="lab">PIM</div><div class="val" id="dvPim"></div></div>
+     <div class="metric-card"><div class="lab">Devengado</div><div class="val" id="dvDev"></div></div>
+     <div class="metric-card"><div class="lab">% Devengado</div><div class="val" id="dvPct"></div></div>
+     <div class="metric-card"><div class="lab">Saldo por Devengar</div><div class="val" id="dvSaldo"></div></div>
+   </div>
+   <div class="dashgrid">
+     <div class="panel"><h3><span>PIM vs Devengado por Programa Presupuestal</span></h3><div class="body chartmini"><canvas id="devProgChart"></canvas></div></div>
+     <div class="panel"><h3><span>Total Devengado por Mes</span></h3><div class="body chartmini"><canvas id="devMonthChart"></canvas></div></div>
+   </div>
+   <div class="panel" style="margin-top:10px">
+     <h3><span>Devengado mensual por Rubro de Atención</span></h3>
+     <div class="tablewrap"><table>
+       <thead><tr><th>Rubro</th><th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>May</th><th>Jun</th><th>Jul</th><th>Ago</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dic</th></tr></thead>
+       <tbody id="devMonthBody"></tbody>
+     </table></div>
+   </div>
+   <div class="dashgrid">
+     <div class="panel"><h3><span>PIM vs Devengado por Categoría de Gasto</span></h3><div class="body chartmini"><canvas id="devCatChart"></canvas></div></div>
+     <div class="panel"><h3><span>PIM vs Devengado por Genérica de Gasto</span></h3><div class="body chartmini"><canvas id="devGenChart"></canvas></div></div>
+   </div>
+ </section>
+
+ <section id="evolucion" class="page"><div class="panel"><h3><span>Evolución mensual</span><span class="small">Montos mensuales</span></h3><div class="body chartbox"><canvas id="evolChart"></canvas></div><div class="tablewrap"><table><thead><tr><th>Mes</th><th>Certificado</th><th>Compromiso</th><th>Devengado</th><th>Girado</th><th>Pagado</th></tr></thead><tbody id="evolBody"></tbody></table></div></div></section>
+</main>
+</div>
+
+<script>
+let DATA = [];
+const $=id=>document.getElementById(id), sum=a=>a.reduce((x,y)=>x+(+y||0),0);
+const pct=(a,b)=>b?100*a/b:0;
+const fmtN=v=>(+v||0).toLocaleString('es-PE',{maximumFractionDigits:0});
+const fmtPct=v=>(+v||0).toLocaleString('es-PE',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+const fmtM=v=>{v=+v||0;const n=Math.abs(v);if(n>=1e9)return 'S/ '+(v/1e9).toLocaleString('es-PE',{minimumFractionDigits:3,maximumFractionDigits:3})+' mil mill.';if(n>=1e6)return 'S/ '+(v/1e6).toLocaleString('es-PE',{minimumFractionDigits:1,maximumFractionDigits:1})+' mill.';return 'S/ '+fmtN(v)}
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function total(rows){const o={pia:0,pim:0,cert:0,cm:0,dev:0,gir:0,pag:0,months:{cert:Array(13).fill(0),cm:Array(13).fill(0),dev:Array(13).fill(0),gir:Array(13).fill(0),pag:Array(13).fill(0)}};rows.forEach(r=>{o.pia+=r.pia;o.pim+=r.pim;['cert','cm','dev','gir','pag'].forEach(k=>{o[k]+=sum(r[k]);r[k].forEach((v,i)=>o.months[k][i]+=+v||0)})});o.mod=o.pim-o.pia;o.saldo=o.pim-o.dev;return o}
+function agg(rows,key){const m=new Map();rows.forEach(r=>{const k=(typeof key==='function'?key(r):r[key])||'(Sin dato)';if(!m.has(k))m.set(k,[]);m.get(k).push(r)});return [...m.entries()].map(([name,rs])=>({name,rows:rs,...total(rs)}))}
+function uniq(field,labelFn){const m=new Map();DATA.forEach(r=>{const v=r[field]||'';if(v&&!m.has(v))m.set(v,labelFn?labelFn(r):v)});return [...m.entries()].sort((a,b)=>String(a[1]).localeCompare(String(b[1]),'es'))}
+
+// ===== ACTUALIZACIÓN DE EXCEL =====
+// La base que vino dentro de esta versión se conserva como respaldo.
+const BASE_DATA = [];
+let activeSource = {
+ type:'central',
+ name:'Cargando fuente central…',
+ rows:0,
+ updated:'',
+ cut:'—',
+ source:'Sector 10 Educación'
+};
+
+const FILTER_IDS=['fUE','fPP','fProd','fAct','fGen','fRubro','fGrp','fMeta','fClas'];
+
+function setImportProgress(pctValue,msg,detail){
+ const modal=$('importModal'), bar=$('importBar'), m=$('importMsg'), d=$('importDetail');
+ if(modal) modal.style.display='flex';
+ if(bar) bar.style.width=Math.max(0,Math.min(100,pctValue))+'%';
+ if(msg) m.textContent=msg;
+ if(detail) d.textContent=detail;
+}
+
+function closeImportModal(delay=700){
+ setTimeout(()=>{const m=$('importModal');if(m)m.style.display='none'},delay);
+}
+
+function chooseExcel(){
+ const input=$('excelFile');
+ input.value='';
+ input.click();
+}
+
+function asText(v){
+ if(v===null || v===undefined) return '';
+ return String(v).trim();
+}
+function asNum(v){
+ if(v===null || v===undefined || v==='') return 0;
+ if(typeof v==='number') return Number.isFinite(v)?v:0;
+ let s=String(v).trim().replace(/\s/g,'');
+ if(!s) return 0;
+ // Si vino como texto con coma decimal
+ if(s.includes(',') && !s.includes('.')) s=s.replace(',','.');
+ else s=s.replace(/,/g,'');
+ const n=Number(s);
+ return Number.isFinite(n)?n:0;
+}
+function codeText(v){
+ if(v===null || v===undefined || v==='') return '';
+ if(typeof v==='number' && Number.isInteger(v)) return String(v);
+ return String(v).trim().replace(/\.0$/,'');
+}
+function monthArray(row,prefix){
+ const a=[];
+ for(let i=1;i<=13;i++){
+   const k=prefix+'_'+String(i).padStart(2,'0');
+   a.push(asNum(row[k]));
+ }
+ return a;
+}
+function normalizeBudgetRow(r){
+ const tt=codeText(r.TIPO_TRANSACCION), gen=codeText(r.GENERICA),
+       sg=codeText(r.SUBGENERICA), sgd=codeText(r.SUBGENERICA_DET),
+       esp=codeText(r.ESPECIFICA), espdet=codeText(r.ESPECIFICA_DET);
+ const clasof=[tt,gen,sg,sgd,esp,espdet].filter(x=>x!=='').join('.');
+ const espd=asText(r.ESPECIFICA_DET_DESCRIPCION);
+ return {
+   ue:asText(r.EJECUTORA_NOMBRE),
+   pp:codeText(r.PROGRAMA_PPTO), ppn:asText(r.PROGRAMA_PPTO_DESCRIPCION),
+   tap:asText(r.TIPO_ACT_PROY_DESCRIPCION)||asText(r.TIPO_ACT_PROY),
+   ap:codeText(r.ACT_PROY), apn:asText(r.ACT_PROY_DESCRIPCION),
+   ao:codeText(r.ACTIV_OBRA_ACCINV), aon:asText(r.ACTIV_OBRA_ACCINV_DESCRIPCION),
+   fun:asText(r.FUNCION_DESCRIPCION),
+   div:asText(r.DIVISION_FUNCIONAL_DESCRIPCION),
+   grp:asText(r.GRUPO_FUNCIONAL_DESCRIPCION),
+   meta:String(r.META??'').trim().padStart(5,'0'),
+   fin:asText(r.FINALIDAD_DESCRIPCION),
+   ff:asText(r.FUENTE_FINANC_DESCRIPCION),
+   rubro:asText(r.RUBRO_DESCRIPCION)||asText(r.RUBRO),
+   cat:asText(r.CATEGORIA_GASTO_DESCRIPCION),
+   tt, gen, genn:asText(r.GENERICA_DESCRIPCION),
+   sg, sgn:asText(r.SUBGENERICA_DESCRIPCION),
+   sgd, sgdn:asText(r.SUBGENERICA_DET_DESCRIPCION),
+   esp, espn:asText(r.ESPECIFICA_DESCRIPCION),
+   espdet, espd,
+   idclas:asText(r.ID_CLASIFICADOR),
+   clasof,
+   claslabel:clasof+(espd?' - '+espd:''),
+   pia:asNum(r.MTO_PIA),
+   mod:asNum(r.MTO_MODIFICACION),
+   pim:asNum(r.MTO_PIM),
+   cert:monthArray(r,'MTO_CERT'),
+   ca:monthArray(r,'MTO_COMPROMISO_ANUAL'),
+   cm:monthArray(r,'MTO_COMPROMISO'),
+   dev:monthArray(r,'MTO_DEVENGADO'),
+   gir:monthArray(r,'MTO_GIRADO'),
+   pag:monthArray(r,'MTO_PAGADO')
+ };
+}
+
+function validateHeaders(rows){
+ if(!rows.length) throw new Error('El Excel no contiene registros.');
+ const keys=new Set(Object.keys(rows[0]));
+ const required=['EJECUTORA_NOMBRE','PROGRAMA_PPTO','MTO_PIA','MTO_PIM','MTO_DEVENGADO_01'];
+ const missing=required.filter(x=>!keys.has(x));
+ if(missing.length) throw new Error('No encuentro estas columnas requeridas: '+missing.join(', ')+'. Verifica que sea la misma estructura del archivo presupuestal.');
+}
+
+function rebuildFilters(){
+ FILTER_IDS.forEach(id=>buildMulti(id));
+ collapsed.clear();
+}
+
+
+function extractCutFromFilename(filename){
+ const name=String(filename||'');
+ const m=name.match(/(?:^|[^0-9])(20\d{2})(\d{2})(\d{2})(?:[^0-9]|$)/);
+ if(!m) return '';
+ const y=Number(m[1]),mo=Number(m[2]),d=Number(m[3]);
+ const dt=new Date(y,mo-1,d);
+ if(dt.getFullYear()!==y || dt.getMonth()!==mo-1 || dt.getDate()!==d) return '';
+ return String(d).padStart(2,'0')+'/'+String(mo).padStart(2,'0')+'/'+y;
+}
+function updateReportMeta(){
+ const source=$('reportSource'), file=$('reportFile'), cut=$('reportCut');
+ if(source) source.textContent=activeSource.source||'Sector 10 Educación';
+ if(file) file.textContent=activeSource.name||'—';
+ if(cut) cut.textContent=activeSource.cut||activeSource.updated||'—';
+}
+
+function sourceLabel(meta){
+ if(meta.type==='base') return `Base incluida en la APP · ${meta.rows.toLocaleString('es-PE')} registros · Corte: ${meta.cut||meta.updated}`;
+ return `${meta.name} · ${meta.rows.toLocaleString('es-PE')} registros · actualizado ${meta.updated}`;
+}
+function updateSourceInfo(){
+ const el=$('dataSourceInfo');
+ if(el) el.textContent=sourceLabel(activeSource);
+ updateReportMeta();
+}
+
+function openDB(){
+ return new Promise((resolve,reject)=>{
+   if(!window.indexedDB){resolve(null);return;}
+   const req=indexedDB.open('DRELM_Presupuesto_DB',1);
+   req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('store'))db.createObjectStore('store')};
+   req.onsuccess=()=>resolve(req.result);
+   req.onerror=()=>reject(req.error);
+ });
+}
+async function saveImportedData(){
+ try{
+   const db=await openDB(); if(!db)return;
+   await new Promise((resolve,reject)=>{
+     const tx=db.transaction('store','readwrite');
+     tx.objectStore('store').put({data:DATA,meta:activeSource},'active');
+     tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);
+   });
+   db.close();
+ }catch(e){console.warn('No se pudo guardar en IndexedDB',e)}
+}
+async function loadSavedData(){
+ try{
+   const db=await openDB(); if(!db)return false;
+   const saved=await new Promise((resolve,reject)=>{
+     const tx=db.transaction('store','readonly');
+     const req=tx.objectStore('store').get('active');
+     req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
+   });
+   db.close();
+   if(saved && Array.isArray(saved.data) && saved.data.length){
+     DATA=saved.data; activeSource=saved.meta||{type:'excel',name:'Excel guardado',rows:DATA.length,updated:''};
+     rebuildFilters();updateSourceInfo();render();
+     return true;
+   }
+ }catch(e){console.warn('No se pudo recuperar la base guardada',e)}
+ return false;
+}
+async function clearSavedData(){
+ try{
+   const db=await openDB(); if(!db)return;
+   await new Promise((resolve,reject)=>{
+     const tx=db.transaction('store','readwrite');
+     tx.objectStore('store').delete('active');
+     tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);
+   });
+   db.close();
+ }catch(e){console.warn(e)}
+}
+
+async function importExcelFile(file){
+ try{
+   if(!file) return;
+   if(typeof XLSX==='undefined'){
+     throw new Error('No se pudo cargar el lector de Excel. Conéctate a Internet y vuelve a abrir la APP para habilitar la importación .xlsx/.xls.');
+   }
+   setImportProgress(8,'Leyendo archivo…',file.name);
+   const ab=await file.arrayBuffer();
+   setImportProgress(30,'Abriendo libro de Excel…','Buscando la hoja de datos presupuestales.');
+   await new Promise(r=>setTimeout(r,30));
+   const wb=XLSX.read(ab,{type:'array',cellDates:false});
+   const sheetName=wb.SheetNames.includes('Hoja1')?'Hoja1':wb.SheetNames[0];
+   if(!sheetName) throw new Error('El libro no contiene hojas.');
+   const ws=wb.Sheets[sheetName];
+   setImportProgress(52,'Convirtiendo registros…',`Hoja utilizada: ${sheetName}`);
+   await new Promise(r=>setTimeout(r,30));
+   const raw=XLSX.utils.sheet_to_json(ws,{defval:'',raw:true});
+   validateHeaders(raw);
+   setImportProgress(70,'Calculando campos presupuestales…',`${raw.length.toLocaleString('es-PE')} filas encontradas.`);
+   await new Promise(r=>setTimeout(r,30));
+   const normalized=raw.map(normalizeBudgetRow).filter(r=>r.ue || r.pim || r.pia);
+   if(!normalized.length) throw new Error('No se encontraron filas presupuestales válidas.');
+   DATA=normalized;
+   const inferredCut=extractCutFromFilename(file.name);
+   activeSource={
+     type:'excel',
+     name:file.name,
+     rows:DATA.length,
+     updated:new Date().toLocaleString('es-PE',{dateStyle:'short',timeStyle:'short'}),
+     cut:inferredCut || 'No identificada en el nombre',
+     source:'Sector 10 Educación'
+   };
+   setImportProgress(86,'Actualizando filtros y módulos…','Recalculando la APP con el nuevo corte.');
+   rebuildFilters();
+   updateSourceInfo();
+   render();
+   await saveImportedData();
+   setImportProgress(100,'Excel actualizado correctamente.','La nueva información queda guardada en este navegador.');
+   $('importMsg').className='import-msg import-ok';
+   closeImportModal(1000);
+ }catch(err){
+   console.error(err);
+   setImportProgress(100,'No se pudo actualizar el Excel.',err.message||String(err));
+   $('importMsg').className='import-msg import-error';
+   setTimeout(()=>{const m=$('importModal');if(m)m.style.display='none';alert('No se pudo actualizar el Excel:\\n\\n'+(err.message||err));},1800);
+ }
+}
+
+async function restoreBaseData(){
+ if(!confirm('¿Deseas volver a la base que vino incluida en esta APP?')) return;
+ DATA=BASE_DATA;
+ activeSource={type:'base',name:'20260828_SECTOR10_LM.xlsx',rows:DATA.length,updated:'28/08/2026',cut:'28/08/2026',source:'Sector 10 Educación'};
+ await clearSavedData();
+ rebuildFilters();
+ updateSourceInfo();
+ render();
+}
+
+function setupExcelUpdater(){
+ const input=$('excelFile');
+ if(input) input.addEventListener('change',e=>importExcelFile(e.target.files?.[0]));
+ updateSourceInfo();
+ // Si anteriormente se cargó un Excel, se recupera automáticamente.
+ loadSavedData();
+}
+
+const multiState={};
+
+function multiEntries(id){
+ if(id==='fUE') return uniq('ue');
+ if(id==='fPP') return uniq('pp',r=>`${r.pp} - ${r.ppn}`);
+ if(id==='fProd') return uniq('ap',r=>`${r.ap} - ${r.apn}`);
+ if(id==='fAct') return uniq('ao',r=>`${r.ao} - ${r.aon}`);
+ if(id==='fGen') return uniq('gen',r=>`${r.gen} - ${r.genn}`);
+ if(id==='fRubro') return uniq('rubro');
+ if(id==='fGrp') return uniq('grp');
+ if(id==='fMeta'){
+   const m=new Map();
+   DATA.forEach(r=>{
+      const code=String(r.meta||'').trim();
+      const desc=String(r.fin||'').trim();
+      if(code && !m.has(code)) m.set(code, desc?`${code} - ${desc}`:code);
+   });
+   return [...m.entries()].sort((a,b)=>String(a[1]).localeCompare(String(b[1]),'es',{numeric:true}));
+ }
+ if(id==='fClas'){
+   const m=new Map();
+   DATA.forEach(r=>{
+      const code=String(r.clasof||'').trim();
+      const label=String(r.claslabel||'').trim();
+      if(code && !m.has(code)) m.set(code,label||code);
+   });
+   return [...m.entries()].sort((a,b)=>String(a[1]).localeCompare(String(b[1]),'es',{numeric:true}));
+ }
+ return [];
+}
+
+function buildMulti(id){
+ const root=$(id), entries=multiEntries(id);
+ multiState[id]={selected:new Set(),entries};
+ root.innerHTML=`
+   <button type="button" class="multi-btn" onclick="toggleMulti('${id}',event)">Todos</button>
+   <div class="multi-menu" onclick="event.stopPropagation()">
+     <div class="multi-search"><input type="text" placeholder="Buscar..." oninput="filterMultiList('${id}',this.value)"></div>
+     <div class="multi-actions">
+       <button type="button" onclick="selectAllMulti('${id}')">Seleccionar todo</button>
+       <button type="button" onclick="clearMulti('${id}')">Limpiar</button>
+     </div>
+     <div class="multi-list"></div>
+   </div>`;
+ renderMultiList(id,'');
+}
+
+function renderMultiList(id,q){
+ const state=multiState[id], root=$(id), list=root.querySelector('.multi-list');
+ q=String(q||'').toLowerCase().trim();
+ const items=state.entries.filter(([v,l])=>!q || String(l).toLowerCase().includes(q) || String(v).toLowerCase().includes(q));
+ list.innerHTML=items.map(([v,l])=>`
+   <label class="multi-item">
+     <input type="checkbox" value="${esc(v)}" ${state.selected.has(String(v))?'checked':''}
+       onchange="toggleMultiValue('${id}',decodeURIComponent('${encodeURIComponent(String(v))}'),this.checked)">
+     <span>${esc(l)}</span>
+   </label>`).join('');
+}
+
+function updateMultiButton(id){
+ const state=multiState[id], btn=$(id).querySelector('.multi-btn');
+ const n=state.selected.size;
+ if(n===0){btn.textContent='Todos';return;}
+ if(n===1){
+   const val=[...state.selected][0];
+   const found=state.entries.find(([v])=>String(v)===String(val));
+   btn.textContent=found?found[1]:val;
+   return;
+ }
+ btn.innerHTML=`<span class="multi-count">${n}</span> seleccionados`;
+}
+
+function toggleMulti(id,e){
+ e.stopPropagation();
+ document.querySelectorAll('.multi').forEach(x=>{if(x.id!==id)x.classList.remove('open')});
+ $(id).classList.toggle('open');
+}
+function filterMultiList(id,q){renderMultiList(id,q)}
+function toggleMultiValue(id,val,checked){
+ const s=multiState[id].selected;
+ checked?s.add(String(val)):s.delete(String(val));
+ updateMultiButton(id);render();
+}
+function selectAllMulti(id){
+ const s=multiState[id].selected;
+ multiState[id].entries.forEach(([v])=>s.add(String(v)));
+ updateMultiButton(id);renderMultiList(id,'');render();
+}
+function clearMulti(id){
+ multiState[id].selected.clear();
+ updateMultiButton(id);
+ const inp=$(id).querySelector('.multi-search input'); if(inp) inp.value='';
+ renderMultiList(id,'');render();
+}
+function selectedValues(id){return multiState[id]?[...multiState[id].selected]:[]}
+function matchMulti(value,selected){
+ return selected.length===0 || selected.includes(String(value??''));
+}
+
+
+async function loadCentralData(){
+ const loader=$('centralLoader'), title=$('centralLoaderTitle'), msg=$('centralLoaderText');
+ try{
+   const url='data.json?v='+Date.now();
+   const res=await fetch(url,{cache:'no-store'});
+   if(!res.ok) throw new Error('No se pudo leer data.json (HTTP '+res.status+').');
+   const payload=await res.json();
+   if(!payload || !Array.isArray(payload.data)) throw new Error('La fuente central no tiene el formato esperado.');
+   DATA=payload.data;
+   const meta=payload.meta||{};
+   activeSource={
+     type:'central',
+     name:meta.file||'data.json',
+     rows:DATA.length,
+     updated:'',
+     cut:meta.cut||'—',
+     source:meta.source||'Sector 10 Educación'
+   };
+   if(!DATA.length) throw new Error('La fuente central está vacía.');
+   if(loader) loader.style.display='none';
+   init();
+   updateReportMeta();
+   const info=$('dataSourceInfo');
+   if(info) info.textContent=`Fuente central · ${DATA.length.toLocaleString('es-PE')} registros · Corte: ${activeSource.cut}`;
+ }catch(err){
+   console.error(err);
+   if(loader){
+     loader.classList.add('error');
+     if(title) title.textContent='No se pudo cargar la fuente central';
+     if(msg) msg.textContent=(err.message||String(err))+' Verifique que index.html y data.json estén publicados en la misma carpeta.';
+   }
+ }
+}
+
+function init(){
+ ['fUE','fPP','fProd','fAct','fGen','fRubro','fGrp','fMeta','fClas'].forEach(buildMulti);
+ $('treeMode').addEventListener('change',()=>{collapsed.clear();render()});
+ document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page,b)));
+ document.addEventListener('click',()=>document.querySelectorAll('.multi').forEach(x=>x.classList.remove('open')));
+ render();
+}
+function filtered(){
+ const sel={
+   ue:selectedValues('fUE'), pp:selectedValues('fPP'), prod:selectedValues('fProd'),
+   act:selectedValues('fAct'), gen:selectedValues('fGen'), rubro:selectedValues('fRubro'),
+   grp:selectedValues('fGrp'), meta:selectedValues('fMeta'), clas:selectedValues('fClas')
+ };
+ return DATA.filter(r=>
+   matchMulti(r.ue,sel.ue) &&
+   matchMulti(r.pp,sel.pp) &&
+   matchMulti(r.ap,sel.prod) &&
+   matchMulti(r.ao,sel.act) &&
+   matchMulti(r.gen,sel.gen) &&
+   matchMulti(r.rubro,sel.rubro) &&
+   matchMulti(r.grp,sel.grp) &&
+   matchMulti(r.meta,sel.meta) &&
+   matchMulti(r.clasof,sel.clas)
+ );
+}
+let currentPage='resumen';
+const titles={resumen:'Resumen ejecutivo',detalle:'Detalle presupuestal',ranking:'Ranking de gasto',saldos:'Saldos presupuestales',programas:'Programas presupuestales',generica:'Genérica de gasto',clasificadores:'Clasificadores de gasto',evolucion:'Evolución mensual',devengado:'Devengado'};
+function showPage(id,btn){
+ currentPage=id;
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ $(id).classList.add('active');
+ document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ $('pageTitle').textContent=titles[id];
+ const l=$('moduleLoading'); if(l) l.style.display='block';
+ requestAnimationFrame(()=>setTimeout(()=>{
+   render();
+   if(l) l.style.display='none';
+ },0));
+}
+function semClass(p){return p>=65?'green':p>=50?'amber':'red'}
+function render(){
+ const rows=filtered(),t=total(rows);
+ $('rowCount').textContent=rows.length.toLocaleString('es-PE')+' registros';
+
+ // KPI superiores comunes a todos los módulos
+ $('kPIA').textContent=fmtM(t.pia);
+ $('kPIM').textContent=fmtM(t.pim);
+ $('sPIM').textContent='Variación: '+fmtM(t.mod);
+ [['CERT','cert'],['COMP','cm'],['DEV','dev'],['GIR','gir'],['PAG','pag']].forEach(([id,k])=>{
+   $('k'+id).textContent=fmtM(t[k]);
+   $('s'+id).textContent=fmtPct(pct(t[k],t.pim))+' del PIM';
+ });
+ $('kSALDO').textContent=fmtM(t.saldo);
+ $('sSALDO').textContent=fmtPct(pct(t.saldo,t.pim))+' del PIM';
+
+ // IMPORTANTE: solo se procesa el módulo visible.
+ if(currentPage==='resumen') renderResumen(rows,t);
+ else if(currentPage==='detalle') renderTree(rows,t);
+ else if(currentPage==='ranking') renderRankingPage(rows,t);
+ else if(currentPage==='saldos') renderSaldoTree(rows,t);
+ else if(currentPage==='programas') renderTables(rows);
+ else if(currentPage==='generica') renderGenericaRich(rows);
+ else if(currentPage==='clasificadores') renderClasificadoresRich(rows);
+ else if(currentPage==='evolucion') renderEvolution(t);
+ else if(currentPage==='devengado') renderDevengado(rows,t);
+}
+function renderResumen(rows,t){
+ const list=agg(rows,'ue').sort((a,b)=>b.pim-a.pim);
+ $('ueBody').innerHTML=list.map(x=>{const pe=pct(x.dev,x.pim);return `<tr><td>${esc(x.name)}</td><td>${fmtN(x.pia)}</td><td>${fmtN(x.pim)}</td><td>${fmtPct(pct(x.cert,x.pim))}</td><td>${fmtPct(pct(x.cm,x.pim))}</td><td>${fmtN(x.dev)}</td><td><span class="sem ${semClass(pe)}"></span>${fmtPct(pe)}</td><td>${fmtN(x.gir)}</td></tr>`}).join('')+`<tr class="total"><td>Total</td><td>${fmtN(t.pia)}</td><td>${fmtN(t.pim)}</td><td>${fmtPct(pct(t.cert,t.pim))}</td><td>${fmtPct(pct(t.cm,t.pim))}</td><td>${fmtN(t.dev)}</td><td>${fmtPct(pct(t.dev,t.pim))}</td><td>${fmtN(t.gir)}</td></tr>`;
+ const rk=[...list].sort((a,b)=>pct(b.dev,b.pim)-pct(a.dev,a.pim));$('quickRank').innerHTML=rk.map((x,i)=>{const p=pct(x.dev,x.pim);return `<div style="display:grid;grid-template-columns:25px 190px 1fr 52px;gap:7px;align-items:center;margin:8px 0;font-size:10px"><b>${i+1}</b><span>${esc(shortUE(x.name))}</span><div class="gauge" style="margin:0"><i style="width:${Math.min(100,p)}%"></i></div><b>${fmtPct(p)}</b></div>`}).join('');
+ drawLineChart('trend',t,[['Compromiso','cm','#8e44ad'],['Devengado','dev','#2386b8'],['Girado','gir','#2ca25f']]);
+}
+const collapsed=new Set();
+function hierarchy(){return $('treeMode').value==='analitica'?[['ppn','Programa'],['apn','Producto / Proyecto'],['aon','Actividad'],['div','División funcional'],['grp','Grupo funcional'],['fin','Meta / Finalidad'],['genn','Genérica'],['claslabel','Clasificador'],['ue','Unidad Ejecutora']]:[['ppn','Programa'],['apn','Producto / Proyecto'],['aon','Actividad'],['genn','Genérica'],['ue','Unidad Ejecutora']]}
+function keyFor(path){return path.map(x=>x[1]).join('|||')}
+function renderTree(rows,grand){const levels=hierarchy(),out=[];buildTree(rows,0,[],levels,grand,out);$('treeBody').innerHTML=out.join('')}
+function buildTree(rows,level,path,levels,grand,out){if(level>=levels.length)return;const [field,label]=levels[level];const groups=agg(rows,field).sort((a,b)=>b.pim-a.pim);groups.forEach(g=>{const np=[...path,[field,g.name]],k=keyFor(np),hasChild=level<levels.length-1,closed=collapsed.has(k);const pond=pct(g.pim,grand.pim),pe=pct(g.dev,g.pim);out.push(`<tr class="lvl${Math.min(level,2)}"><td class="treecell"><span class="indent" style="width:${level*18}px"></span>${hasChild?`<span class="toggle" onclick="toggleNode('${encodeURIComponent(k)}')">${closed?'+':'−'}</span>`:'<span style="display:inline-block;width:23px"></span>'}<span title="${esc(g.name)}">${esc(g.name)}</span></td><td>${fmtN(g.pia)}</td><td>${fmtN(g.pim-g.pia)}</td><td>${fmtN(g.pim)}</td><td>${fmtPct(pond)}</td><td>${fmtN(g.cert)}</td><td>${fmtPct(pct(g.cert,g.pim))}</td><td>${fmtN(g.cm)}</td><td>${fmtPct(pct(g.cm,g.pim))}</td><td>${fmtN(g.dev)}</td><td><span class="sem ${semClass(pe)}"></span>${fmtPct(pe)}</td><td>${fmtN(g.gir)}</td><td>${fmtN(g.pag)}</td><td>${fmtN(g.pim-g.dev)}</td></tr>`);if(hasChild&&!closed)buildTree(g.rows,level+1,np,levels,grand,out)})}
+function toggleNode(enc){const k=decodeURIComponent(enc);collapsed.has(k)?collapsed.delete(k):collapsed.add(k);renderTree(filtered(),total(filtered()))}
+function collapseAll(){collapsed.clear();const rows=filtered(),lev=hierarchy();agg(rows,lev[0][0]).forEach(g=>collapsed.add(keyFor([[lev[0][0],g.name]])));renderTree(rows,total(rows))}
+function expandLevel(n){collapsed.clear();if(n===0)collapseAll();else renderTree(filtered(),total(filtered()))}
+function shortUE(s){return s.replace('DIRECCION DE EDUCACION DE LIMA','DRE LIMA').replace('USE ','UGEL ')}
+
+function ueOrder(name){
+ const s=String(name||'').toUpperCase();
+ if(s.includes('USE 01')||s.includes('UGEL 01'))return 1;
+ if(s.includes('USE 02')||s.includes('UGEL 02'))return 2;
+ if(s.includes('USE 03')||s.includes('UGEL 03'))return 3;
+ if(s.includes('USE 04')||s.includes('UGEL 04'))return 4;
+ if(s.includes('USE 05')||s.includes('UGEL 05'))return 5;
+ if(s.includes('USE 06')||s.includes('UGEL 06'))return 6;
+ if(s.includes('USE 07')||s.includes('UGEL 07'))return 7;
+ if(s.includes('DIRECCION DE EDUCACION DE LIMA')||s.includes('DRE LIMA')||s.includes('DRELM'))return 8;
+ return 99;
+}
+
+function renderRankingPage(rows,t){
+ const base=agg(rows,'ue').filter(x=>x.pim>0);
+ const rankByExec=[...base].sort((a,b)=>pct(b.dev,b.pim)-pct(a.dev,a.pim));
+ const rankPos=new Map(rankByExec.map((x,i)=>[x.name,i+1]));
+ const list=[...base].sort((a,b)=>ueOrder(a.name)-ueOrder(b.name));
+ const vals=base.map(x=>pct(x.dev,x.pim));
+ const avg=pct(t.dev,t.pim),mx=Math.max(...vals,0),mn=vals.length?Math.min(...vals):0;
+ $('rAvg').textContent=fmtPct(avg);$('rMax').textContent=fmtPct(mx);$('rMin').textContent=fmtPct(mn);$('rGap').textContent=(mx-mn).toLocaleString('es-PE',{minimumFractionDigits:1,maximumFractionDigits:1})+' p.p.';
+ $('rankCards').innerHTML=list.map(x=>{
+   const p=pct(x.dev,x.pim),pos=rankPos.get(x.name)||'—';
+   return `<div class="rankcard"><div class="rhead"><span>${esc(shortUE(x.name))}</span><span class="place">Puesto #${pos}</span></div><div class="gauge"><i style="width:${Math.min(100,p)}%"></i></div><div class="rmetric">${fmtPct(p)}</div><div class="rgrid"><span>PIA <b>${fmtM(x.pia)}</b></span><span>PIM <b>${fmtM(x.pim)}</b></span><span>% Cert. <b>${fmtPct(pct(x.cert,x.pim))}</b></span><span>% Comp. <b>${fmtPct(pct(x.cm,x.pim))}</b></span><span>Devengado <b>${fmtM(x.dev)}</b></span><span>Girado <b>${fmtM(x.gir)}</b></span><span>Pagado <b>${fmtM(x.pag)}</b></span><span>Saldo <b>${fmtM(x.pim-x.dev)}</b></span></div></div>`
+ }).join('');
+ drawRankChart('rankChart',list);
+}
+function drawRankChart(id,list){
+ const c=$(id);if(!c||c.offsetParent===null)return;const ctx=c.getContext('2d'),dpr=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;c.width=w*dpr;c.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);
+ const left=58,right=58,top=25,bottom=70,iw=w-left-right,ih=h-top-bottom,n=list.length||1,groupW=iw/n,barW=Math.max(5,groupW/7.5);const max=Math.max(...list.map(x=>Math.max(x.pia,x.pim,x.cert,x.cm,x.dev,x.gir)),1);const cols=['#f2a2a8','#78b6d3','#8bc49b','#f1c986','#a9b4c0','#e8db87'];
+ for(let j=0;j<=4;j++){let y=top+ih*j/4;ctx.strokeStyle='#dde5ea';ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(w-right,y);ctx.stroke();ctx.fillStyle='#687481';ctx.font='9px Segoe UI';ctx.fillText(((max*(4-j)/4)/1e6).toFixed(0)+'M',5,y+3)}
+ list.forEach((x,i)=>{const vals=[x.pia,x.pim,x.cert,x.cm,x.dev,x.gir],cx=left+groupW*i+groupW/2;vals.forEach((v,j)=>{const bh=ih*v/max;ctx.fillStyle=cols[j];ctx.fillRect(cx-(vals.length*barW)/2+j*barW,top+ih-bh,barW-1,bh)});ctx.save();ctx.translate(cx,h-8);ctx.rotate(-.55);ctx.fillStyle='#5d6873';ctx.font='9px Segoe UI';ctx.fillText(shortUE(x.name).slice(0,20),0,0);ctx.restore()});
+ ctx.strokeStyle='#f0a500';ctx.lineWidth=2;ctx.setLineDash([4,3]);ctx.beginPath();list.forEach((x,i)=>{const p=pct(x.dev,x.pim),cx=left+groupW*i+groupW/2,y=top+ih*(1-p/100);i?ctx.lineTo(cx,y):ctx.moveTo(cx,y)});ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#f0a500';ctx.fillText('% ejecución',w-right-45,12);
+}
+function renderTables(rows){
+ const pp=agg(rows,r=>(r.pp?r.pp+' - ':'')+(r.ppn||'(Sin dato)')).sort((a,b)=>b.pim-a.pim);
+ const pbody=$('programasBody');
+ if(pbody){
+   pbody.innerHTML=pp.map(x=>`<tr><td>${esc(x.name)}</td><td>${fmtN(x.pia)}</td><td>${fmtN(x.pim)}</td><td>${fmtN(x.cert)}</td><td>${fmtPct(pct(x.cert,x.pim))}</td><td>${fmtN(x.cm)}</td><td>${fmtPct(pct(x.cm,x.pim))}</td><td>${fmtN(x.dev)}</td><td>${fmtPct(pct(x.dev,x.pim))}</td><td>${fmtN(x.pim-x.dev)}</td></tr>`).join('');
+ }
+}
+function metricRow(x,name){return `<tr><td>${esc(name)}</td><td>${fmtN(x.pia)}</td><td>${fmtN(x.pim)}</td><td>${fmtN(x.cert)}</td><td>${fmtN(x.cm)}</td><td>${fmtN(x.dev)}</td><td>${fmtPct(pct(x.dev,x.pim))}</td><td>${fmtN(x.gir)}</td><td>${fmtN(x.pag)}</td><td>${fmtN(x.pim-x.dev)}</td></tr>`}
+
+function drawGroupedBars(id,groups,labels){
+ const c=$(id);if(!c||c.offsetParent===null)return;
+ const ctx=c.getContext('2d'),dpr=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;
+ c.width=w*dpr;c.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);
+ const left=48,right=18,top=20,bottom=58,iw=w-left-right,ih=h-top-bottom,n=Math.max(groups.length,1);
+ const max=Math.max(...groups.flatMap(g=>g.values),1),groupW=iw/n,barW=Math.max(6,Math.min(20,groupW/(labels.length+1)));
+ const cols=['#f2a2a8','#78b6d3','#8bc49b','#f1c986','#a9b4c0','#e8db87'];
+ for(let j=0;j<=4;j++){const y=top+ih*j/4;ctx.strokeStyle='#e0e7ec';ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(w-right,y);ctx.stroke();ctx.fillStyle='#6b7785';ctx.font='9px Segoe UI';ctx.fillText(((max*(4-j)/4)/1e6).toFixed(0)+'M',3,y+3)}
+ groups.forEach((g,i)=>{const cx=left+groupW*i+groupW/2;g.values.forEach((v,j)=>{const bh=ih*(v/max);ctx.fillStyle=cols[j%cols.length];ctx.fillRect(cx-(labels.length*barW)/2+j*barW,top+ih-bh,barW-1,bh)});ctx.save();ctx.translate(cx,h-8);ctx.rotate(-.5);ctx.fillStyle='#5f6b76';ctx.font='8px Segoe UI';ctx.fillText(String(g.name).slice(0,22),0,0);ctx.restore()});
+ labels.forEach((lab,i)=>{ctx.fillStyle=cols[i%cols.length];ctx.fillRect(left+i*95,3,9,9);ctx.fillStyle='#4c5864';ctx.fillText(lab,left+12+i*95,11)});
+}
+function renderSaldoTree(rows,t){
+ $('sdPctCert').textContent=fmtPct(pct(t.cert,t.pim));$('sdPctComp').textContent=fmtPct(pct(t.cm,t.pim));$('sdPctDev').textContent=fmtPct(pct(t.dev,t.pim));$('sdPctGir').textContent=fmtPct(pct(t.gir,t.pim));
+ $('sdCert').textContent=fmtM(t.pim-t.cert);$('sdComp').textContent=fmtM(t.pim-t.cm);$('sdDev').textContent=fmtM(t.pim-t.dev);
+ const out=[];
+ const cls=agg(rows,r=>r.claslabel||'(Sin clasificador)').sort((a,b)=>b.pim-a.pim);
+ cls.forEach(c=>{
+   out.push(saldoRow(c,c.name,0));
+   const ues=agg(c.rows,'ue').sort((a,b)=>ueOrder(a.name)-ueOrder(b.name));
+   ues.forEach(u=>{
+     out.push(saldoRow(u,shortUE(u.name),1));
+     const metas=agg(u.rows,r=>(r.meta?r.meta+' - ':'')+(r.fin||'(Sin meta)')).sort((a,b)=>b.pim-a.pim);
+     metas.forEach(m=>out.push(saldoRow(m,m.name,2)));
+   });
+ });
+ $('saldoTreeBody').innerHTML=out.join('');
+}
+function saldoRow(x,name,lvl){
+ return `<tr class="lvl${Math.min(lvl,2)}"><td><span class="indent" style="width:${lvl*18}px"></span>${esc(name)}</td><td>${fmtN(x.pim)}</td><td>${fmtN(x.cert)}</td><td>${fmtPct(pct(x.cert,x.pim))}</td><td>${fmtN(x.pim-x.cert)}</td><td>${fmtN(x.cm)}</td><td>${fmtPct(pct(x.cm,x.pim))}</td><td>${fmtN(x.pim-x.cm)}</td><td>${fmtN(x.dev)}</td><td>${fmtPct(pct(x.dev,x.pim))}</td><td>${fmtN(x.pim-x.dev)}</td></tr>`;
+}
+function renderGenericaRich(rows){
+ const cats=agg(rows,r=>r.cat||'(Sin categoría)').sort((a,b)=>b.pim-a.pim), out=[];
+ cats.forEach(c=>{
+   out.push(genericMetricRow(c,c.name,0));
+   agg(c.rows,r=>(r.gen?r.gen+' - ':'')+(r.genn||'(Sin genérica)')).sort((a,b)=>b.pim-a.pim).forEach(g=>out.push(genericMetricRow(g,g.name,1)));
+ });
+ $('genericaBody').innerHTML=out.join('');
+ const gs=agg(rows,r=>(r.gen?r.gen+' - ':'')+(r.genn||'(Sin genérica)')).sort((a,b)=>b.pim-a.pim).slice(0,12);
+ drawGroupedBars('genChart',gs.map(x=>({name:x.name,values:[x.pim,x.dev]})),['PIM','Devengado']);
+ const rb=agg(rows,'rubro').sort((a,b)=>b.pim-a.pim).slice(0,12);
+ drawGroupedBars('rubroChart',rb.map(x=>({name:x.name,values:[x.pim,x.dev]})),['PIM','Devengado']);
+}
+function genericMetricRow(x,name,lvl){
+ return `<tr class="lvl${Math.min(lvl,2)}"><td><span class="indent" style="width:${lvl*18}px"></span>${esc(name)}</td><td>${fmtN(x.pia)}</td><td>${fmtN(x.pim)}</td><td>${fmtN(x.pim-x.pia)}</td><td>${fmtN(x.cert)}</td><td>${fmtPct(pct(x.cert,x.pim))}</td><td>${fmtN(x.cm)}</td><td>${fmtPct(pct(x.cm,x.pim))}</td><td>${fmtN(x.dev)}</td><td>${fmtPct(pct(x.dev,x.pim))}</td><td>${fmtN(x.gir)}</td><td>${fmtPct(pct(x.gir,x.pim))}</td></tr>`;
+}
+function renderClasificadoresRich(rows){
+ const out=[],cls=agg(rows,r=>r.claslabel||'(Sin clasificador)').sort((a,b)=>b.pim-a.pim);
+ cls.forEach(c=>{
+   out.push(genericMetricRow(c,c.name,0));
+   agg(c.rows,r=>(r.pp?r.pp+' - ':'')+(r.ppn||'(Sin programa)')).sort((a,b)=>b.pim-a.pim).forEach(p=>{
+     out.push(genericMetricRow(p,p.name,1));
+     agg(p.rows,'grp').sort((a,b)=>b.pim-a.pim).forEach(g=>{
+       out.push(genericMetricRow(g,g.name,2));
+       agg(g.rows,'ue').sort((a,b)=>ueOrder(a.name)-ueOrder(b.name)).forEach(u=>out.push(genericMetricRow(u,shortUE(u.name),3)));
+     });
+   });
+ });
+ $('clasTreeBody').innerHTML=out.join('');
+ const rb=agg(rows,'rubro').sort((a,b)=>b.pim-a.pim).slice(0,10);
+ drawGroupedBars('clasRubroChart',rb.map(x=>({name:x.name,values:[x.pim,x.dev]})),['PIM','Devengado']);
+ const pp=agg(rows,r=>(r.pp?r.pp+' - ':'')+(r.ppn||'(Sin programa)')).sort((a,b)=>b.pim-a.pim).slice(0,10);
+ drawGroupedBars('clasProgChart',pp.map(x=>({name:x.name,values:[x.pim,x.dev]})),['PIM','Devengado']);
+}
+function renderDevengado(rows,t){
+ $('dvPim').textContent=fmtM(t.pim);$('dvDev').textContent=fmtM(t.dev);$('dvPct').textContent=fmtPct(pct(t.dev,t.pim));$('dvSaldo').textContent=fmtM(t.pim-t.dev);
+ const pp=agg(rows,r=>(r.pp?r.pp+' - ':'')+(r.ppn||'(Sin programa)')).sort((a,b)=>b.pim-a.pim).slice(0,10);
+ drawGroupedBars('devProgChart',pp.map(x=>({name:x.name,values:[x.pim,x.dev]})),['PIM','Devengado']);
+ const monthNames=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+ const monthGroups=monthNames.map((name,i)=>({name,values:[t.months.dev[i]]})).filter(g=>g.values[0]!==0);
+ drawGroupedBars('devMonthChart',monthGroups,['Devengado']);
+ const rubros=agg(rows,'rubro').sort((a,b)=>b.dev-a.dev);
+ $('devMonthBody').innerHTML=rubros.map(r=>`<tr><td>${esc(r.name)}</td>${Array.from({length:12},(_,i)=>`<td>${fmtN(r.rows.reduce((s,x)=>s+(+x.dev[i]||0),0))}</td>`).join('')}</tr>`).join('');
+ const cats=agg(rows,r=>r.cat||'(Sin categoría)').sort((a,b)=>b.pim-a.pim);
+ drawGroupedBars('devCatChart',cats.map(x=>({name:x.name,values:[x.pim,x.dev]})),['PIM','Devengado']);
+ const gs=agg(rows,r=>(r.gen?r.gen+' - ':'')+(r.genn||'(Sin genérica)')).sort((a,b)=>b.pim-a.pim);
+ drawGroupedBars('devGenChart',gs.map(x=>({name:x.name,values:[x.pim,x.dev]})),['PIM','Devengado']);
+}
+
+function renderEvolution(t){const months=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic','13'];$('evolBody').innerHTML=months.map((m,i)=>`<tr><td>${m}</td><td>${fmtN(t.months.cert[i])}</td><td>${fmtN(t.months.cm[i])}</td><td>${fmtN(t.months.dev[i])}</td><td>${fmtN(t.months.gir[i])}</td><td>${fmtN(t.months.pag[i])}</td></tr>`).join('');drawLineChart('evolChart',t,[['Certificado','cert','#566573'],['Compromiso','cm','#8e44ad'],['Devengado','dev','#2386b8'],['Girado','gir','#2ca25f'],['Pagado','pag','#d97a16']])}
+function drawLineChart(id,t,seriesSpec){const c=$(id);if(!c||c.offsetParent===null)return;const ctx=c.getContext('2d'),dpr=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;c.width=w*dpr;c.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const months=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic','13'];const series=seriesSpec.map(x=>[x[0],t.months[x[1]],x[2]]),max=Math.max(...series.flatMap(s=>s[1]),1),left=55,right=15,top=28,bottom=28,iw=w-left-right,ih=h-top-bottom;ctx.font='9px Segoe UI';for(let j=0;j<=4;j++){const y=top+ih*j/4;ctx.strokeStyle='#dde5ea';ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(w-right,y);ctx.stroke();ctx.fillStyle='#6b7785';ctx.fillText(((max*(4-j)/4)/1e6).toFixed(0)+'M',4,y+3)}months.forEach((m,i)=>{ctx.fillStyle='#6b7785';ctx.fillText(m,left+iw*i/12-7,h-7)});series.forEach((s,si)=>{ctx.strokeStyle=s[2];ctx.lineWidth=2;ctx.beginPath();s[1].forEach((v,i)=>{const x=left+iw*i/12,y=top+ih*(1-v/max);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();ctx.fillStyle=s[2];ctx.fillRect(left+si*115,4,9,9);ctx.fillStyle='#45515d';ctx.fillText(s[0],left+12+si*115,12)})}
+function resetFilters(){
+ ['fUE','fPP','fProd','fAct','fGen','fRubro','fGrp','fMeta','fClas'].forEach(id=>{
+   multiState[id].selected.clear();updateMultiButton(id);renderMultiList(id,'');
+ });
+ collapsed.clear();render();
+}
+function exportCSV(){const rows=filtered(),lines=[['Unidad Ejecutora','Programa','Producto/Proyecto','Actividad','Grupo funcional','Meta','Genérica','Rubro','Clasificador','PIA','PIM','Certificado','Compromiso','Devengado','Girado','Pagado','Saldo']];rows.forEach(r=>lines.push([r.ue,`${r.pp} ${r.ppn}`,`${r.ap} ${r.apn}`,`${r.ao} ${r.aon}`,r.grp,r.meta,`${r.gen} ${r.genn}`,r.rubro,r.claslabel,r.pia,r.pim,sum(r.cert),sum(r.cm),sum(r.dev),sum(r.gir),sum(r.pag),r.pim-sum(r.dev)]));const csv='\ufeff'+lines.map(a=>a.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(';')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='presupuesto_drelm_filtrado.csv';a.click();URL.revokeObjectURL(a.href)}
+window.addEventListener('resize',()=>render());
+loadCentralData();
+</script>
+
+<div id="moduleLoading" class="module-loading">Procesando módulo…</div>
+</body>
+</html>
